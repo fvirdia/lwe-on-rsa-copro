@@ -562,8 +562,8 @@ class Skipper2Negated(Skipper4):
         Wp = (Ap*Bp + Cp) % F
         Wn = (An*Bn + Cn) % F
 
-        We = (Wp+Wn) % F
-        Wo = (Wp-Wn) % F
+        We = R(map(lambda x: x % F, Wp+Wn))
+        Wo = R(map(lambda x: x % F, Wp-Wn))
 
         Wo, We = (sum((Wo[0+i] + (2**l * We[m+i] % F))*x**i for i in range(m-1)) + Wo[m-1]*x**(m-1)) % F, \
                  (sum((We[0+i] + (2**l * Wo[m+i] % F))*x**i for i in range(m-1)) + We[m-1]*x**(m-1)) % F
