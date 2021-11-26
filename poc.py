@@ -38,7 +38,7 @@ def balance(e, q=None):
         e = e % q
         return ZZ(e-q) if e>q//2 else ZZ(e)
 
-
+
 # Kyber (sort of)
 
 class Kyber:
@@ -145,9 +145,9 @@ class Kyber:
 
     @staticmethod
     def decode(m, q, n):
-        """Decode vector `m` to `\{0,1\}^n` depending on distance to `q/2`
+        """Decode vector `m` to `{0,1}^n` depending on distance to `q/2`
 
-        :param m: a vector of length `\leq n`
+        :param m: a vector of length `leq n`
         :param q: modulus
 
         """
@@ -211,7 +211,7 @@ class Kyber:
         else:
             return hash(c)  # NOTE ignoring z
 
-
+
 class MiniKyber(Kyber):
     """
     Tiny parameters for testing.
@@ -232,8 +232,8 @@ class Nose:
     @staticmethod
     def snort(g, f, p):
         """
-        Convert vector `g` in `\ZZ^n` with coefficients bounded by `p/2` in absolute value to
-        integer `\bmodp f(p)`.
+        Convert vector `g` in `ZZ^n` with coefficients bounded by `p/2` in absolute value to
+        integer `modp f(p)`.
 
         :param g: a vector of length `n`
         :param f: a minpoly
@@ -245,9 +245,9 @@ class Nose:
 
     @staticmethod
     def sneeze(G, f, p):
-        """Convert integer `G \bmodl f(p)` to vector of integers
+        """Convert integer `G modl f(p)` to vector of integers
 
-        :param G: an integer `\bmodl f(p)`
+        :param G: an integer `modl f(p)`
         :param f: a minpoly
         :param p: base
 
@@ -272,9 +272,9 @@ class Nose:
 
     @staticmethod
     def proof_sneeze(G, f, p):
-        """Convert integer `G \bmod f(p)` to vector of integers
+        """Convert integer `G bmod f(p)` to vector of integers
 
-        :param G: an integer `\bmod f(p)`
+        :param G: an integer `bmod f(p)`
         :param f: a minpoly
         :param p: base
 
@@ -299,7 +299,7 @@ class Nose:
     @classmethod
     def prec(cls, scheme):
         """
-        Return `\log_2(k ce eta (q-1)/2 + (q-1)/2 + 1) + 1`
+        Return `log_2(k ce eta (q-1)/2 + (q-1)/2 + 1) + 1`
 
         1. eta q/2 is the upper bound on the product in absolute value
         2. We add ce such products during modular reduction
@@ -316,7 +316,7 @@ class Nose:
     @classmethod
     def muladd(cls, scheme, a, b, c, l=None):
         """
-        Compute `a \cdot b + c mod f` using big-integer arithmetic
+        Compute `a cdot b + c mod f` using big-integer arithmetic
 
         :param cls: Skipper class
         :param scheme: Scheme class, inherit and change constants to change defaults
@@ -340,14 +340,14 @@ class Nose:
         d = cls.sneeze(D % F, f, 2**l)
         return R(d)
 
-
+
 # Skipper
 
 class Skipper4(Nose):
     """
     Kyber using big integer arithmetic
 
-    IND-CPA Decryption in 30 multiplication of (64 \cdot 25 =) 1600-bit integers.
+    IND-CPA Decryption in 30 multiplication of (64 cdot 25 =) 1600-bit integers.
 
     - Degree 4 polynomial multiplication
     - Standard signed Kronecker substitution to pack 64 coefficients into one integer.
@@ -369,7 +369,7 @@ class Skipper4(Nose):
     @classmethod  # TODO: n vs 2n expansion factor # TODO: tempted of getting rid of this
     def prec(cls, kyber):
         """
-        Return `\log_2(k n eta (q-1)/2 + (q-1)/2 + 1) + 1`
+        Return `log_2(k n eta (q-1)/2 + (q-1)/2 + 1) + 1`
 
         1. eta q/2 is the upper bound on the product in absolute value
         2. We add n such products during modular reduction          # TODO: n vs 2n
@@ -386,7 +386,7 @@ class Skipper4(Nose):
     @classmethod
     def muladd(cls, kyber, a, b, c, l=None):
         """
-        Compute `a \cdot b + c` using big-integer arithmetic
+        Compute `a cdot b + c` using big-integer arithmetic
 
         :param cls: Skipper class
         :param kyber: Kyber class, inherit and change constants to change defaults
@@ -502,7 +502,7 @@ class Skipper2Negated(Skipper4):
     """
     Kyber using big integer arithmetic
 
-    IND-CPA Kyber Decryption in 20 multiplications of (128 \cdot 13 =) 1664-bit integers.
+    IND-CPA Kyber Decryption in 20 multiplications of (128 cdot 13 =) 1664-bit integers.
 
     - Degree 2 polynomial multiplication
     - Negated, signed Kronecker substitution to pack 128 coefficients into one integer.
@@ -521,7 +521,7 @@ class Skipper2Negated(Skipper4):
     @classmethod
     def muladd(cls, kyber, a, b, c, l=None):
         """
-        Compute `a \cdot b + c` using big-integer arithmetic
+        Compute `a cdot b + c` using big-integer arithmetic
 
         :param cls: Skipper class
         :param kyber: Kyber class, inherit and change constants to change defaults
@@ -562,8 +562,8 @@ class Skipper2Negated(Skipper4):
         Wp = (Ap*Bp + Cp) % F
         Wn = (An*Bn + Cn) % F
 
-        We = R(map(lambda x: x % F, Wp+Wn))
-        Wo = R(map(lambda x: x % F, Wp-Wn))
+        We = R(list(map(lambda x: x % F, Wp+Wn)))
+        Wo = R(list(map(lambda x: x % F, Wp-Wn)))
 
         Wo, We = (sum((Wo[0+i] + (2**l * We[m+i] % F))*x**i for i in range(m-1)) + Wo[m-1]*x**(m-1)) % F, \
                  (sum((We[0+i] + (2**l * Wo[m+i] % F))*x**i for i in range(m-1)) + We[m-1]*x**(m-1)) % F

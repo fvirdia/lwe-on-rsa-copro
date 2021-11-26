@@ -81,12 +81,14 @@ def test_kyber(cls=Kyber, t=16):
         <MiniKyber> CCA pass
 
     """
-    print "<%s> CPA"%(cls.__name__),
+    print("<%s> CPA"%(cls.__name__), end=" ")
+    sys.stdout.flush()
     test_kyber_cpa(cls, t)
-    print "pass"
-    print "<%s> CCA"%(cls.__name__),
+    print("pass")
+    print("<%s> CCA"%(cls.__name__), end=" ")
+    sys.stdout.flush()
     test_kyber_cca(cls, t)
-    print "pass"
+    print("pass")
 
 
 def test_nose(cls=Kyber, l=None, t=128, seed=0xdeadbeef, proof=False, worst_case=True):
@@ -282,16 +284,20 @@ def test_skipper(skipper=Skipper4, kyber=Kyber, t=128, l=None):
         <Skipper2Negated> Enc pass
 
     """
-    print u"<%s> Prec: %2d, ell: %s"%(skipper.__name__, ceil(skipper.prec(kyber)), l)
-    print "<%s> -1"%(skipper.__name__),
+    print("<%s> Prec: %2d, ell: %s"%(skipper.__name__, ceil(skipper.prec(kyber)), l), end=" ")
+    print("<%s> -1"%(skipper.__name__), end=" ")
+    sys.stdout.flush()
     test_minus_one(skipper, kyber, l=l)
-    print "pass"
-    print "<%s> Worst case"%(skipper.__name__),
+    print("pass")
+    print("<%s> Worst case"%(skipper.__name__), end=" ")
+    sys.stdout.flush()
     test_skipper_prec(skipper, kyber, l=l)
-    print "pass"
-    print "<%s> Dec"%(skipper.__name__),
+    print("pass")
+    print("<%s> Dec"%(skipper.__name__), end=" ")
+    sys.stdout.flush()
     test_skipper_cpa_dec(skipper, kyber, t, l=l)
-    print "pass"
-    print "<%s> Enc"%(skipper.__name__),
+    print("pass")
+    print("<%s> Enc"%(skipper.__name__), end=" ")
+    sys.stdout.flush()
     test_skipper_cpa_enc(skipper, kyber, t, l=l)
-    print "pass"
+    print("pass")
